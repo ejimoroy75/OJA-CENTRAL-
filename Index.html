@@ -1,6 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OjaCentral - Nigeria's Unified Commerce Network</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased flex flex-col min-h-screen">
+
+  <!-- Main Navigation -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2 cursor-pointer" onclick="showStore()">
+        <div class="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-black text-lg">
+          O
+        </div>
+        <span class="text-xl font-extrabold tracking-tight text-gray-900">OjaCentral</span>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="flex items-center gap-2">
+        <button onclick="toggleView()" id="viewToggleBtn" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold px-3 py-2 rounded-lg transition-colors border border-emerald-200">
+          Vendor Portal
+        </button>
+        <button onclick="toggleCartModal()" class="relative p-2 text-gray-700 hover:text-emerald-600 transition-colors">
+          <i class="fa-solid fa-bag-shopping text-xl"></i>
+          <span id="cartBadge" class="hidden absolute -top-1 -right-1 bg-emerald-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- STOREFRONT VIEW -->
+  <div id="storeView" class="flex-grow">
+    
+    <!-- Hero Banner -->
+    <section class="bg-gradient-to-r from-emerald-800 to-teal-900 text-white py-10 px-4">
+      <div class="max-w-6xl mx-auto text-center">
+        <span class="inline-block bg-emerald-700/60 text-emerald-200 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-2">
+          Verified Nigerian Merchants
+        </span>
+        <h1 class="text-2xl sm:text-4xl font-black tracking-tight max-w-2xl mx-auto">
+          Shop Direct from Trusted Boutiques, Kitchens & Beauty Brands
+        </h1>
+        <p class="mt-2 text-xs sm:text-sm text-emerald-100 max-w-lg mx-auto">
+          Every order protected by OjaCentral Escrow. Fast delivery across Nigeria.
+        </p>
+      </div>
+    </section>
+
+    <!-- Search & Filter Bar -->
+    <div class="max-w-6xl mx-auto px-4 mt-6">
+      <div class="relative mb-4">
+        <input type="text" id="storeSearch" oninput="renderStore()" placeholder="Search items, brands, or vendors..." 
+          class="w-full bg-white border border-gray-200 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none shadow-sm">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-gray-400 text-sm"></i>
+      </div>
+
+      <!-- Categories -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="catFilterRow">
+        <button onclick="filterCat('All')" class="store-cat bg-emerald-600 text-white px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">All Items</button>
+        <button onclick="filterCat('Beauty')" class="store-cat bg-white border border-gray-200 text-gray-700 px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">Health & Beauty</button>
+        <button onclick="filterCat('Fashion')" class="store-cat bg-white border border-gray-200 text-gray-700 px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">Fashion & Apparel</button>
+        <button onclick="filterCat('Food')" class="store-cat bg-white border border-gray-200 text-gray-700 px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">Kitchens & Food</button>
+        <button onclick="filterCat('Tech')" class="store-cat bg-white border border-gray-200 text-gray-700 px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">Electronics</button>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <main class="max-w-6xl mx-auto px-4 py-6">
+      <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6"></div>
+    </main>
+  </div>
+
+  <!-- VENDOR ONBOARDING VIEW -->
+  <div id="vendorView" class="hidden flex-grow max-w-xl mx-auto px-4 py-10 w-full">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8">
+      <div class="flex justify-between items-center mb-4">
+        <div>
+          <h2 class="text-xl font-black text-gray-900">Merchant Registration</h2>
+          <p class="text-xs text-gray-500 mt-0.5">Direct onboarding via WhatsApp verification.</p>
+        </div>
+        <button onclick="showStore()" class="text-xs text-emerald-600 font-bold hover:underline">
+          Back to Store
+        </button>
+      </div>
+
+      <form onsubmit="sendToWhatsApp(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Business Name</label>
+          <input type="text" id="vBusiness" required placeholder="e.g. Phyna Beauty Spa" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Contact Name</label>
+            <input type="text" id="vContact" required placeholder="Full Name" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">WhatsApp</label>
+            <input type="tel" id="vPhone" required placeholder="080 0000 0000" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Category</label>
+          <select id="vCategory" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white">
+            <option value="Beauty">Health & Beauty Spa</option>
+            <option value="Fashion">Fashion, Bags & Apparel</option>
+            <option value="Food">Kitchens, Food & Catering</option>
+            <option value="Tech">Consumer Electronics</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Location (State)</label>
+          <input type="text" id="vLocation" required placeholder="e.g. Lagos, Anambra, Abuja" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+        </div>
+
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-lg text-sm transition-colors shadow-sm flex items-center justify-center gap-2">
+          <i class="fa-brands fa-whatsapp text-base"></i>
+          Register via WhatsApp
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div id="cartModal" class="hidden fixed inset-0 z-50 overflow-hidden bg-gray-900/50 backdrop-blur-sm">
+    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+      <div class="w-screen max-w-sm bg-white shadow-xl flex flex-col">
+        <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+          <h2 class="text-base font-bold text-gray-900">Your Basket</h2>
+          <button onclick="toggleCartModal()" class="text-gray-400 hover:text-gray-600 p-1">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <div id="cartList" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
+
+        <div class="p-4 border-t border-gray-200 bg-gray-50 space-y-3">
+          <div class="flex justify-between font-bold text-sm text-gray-900">
+            <span>Total:</span>
+            <span id="cartTotal">₦0</span>
+          </div>
+          <button onclick="checkoutOrder()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg text-sm transition-colors shadow-sm">
+            Proceed to Order via WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="bg-gray-900 text-gray-400 py-6 text-center text-xs border-t border-gray-800">
     <p>© 2026 OjaCentral Technologies. Nationwide Escrow Network 🇳🇬</p>
     <p class="mt-1">Connecting Verified African Merchants Directly to Buyers.</p>
   </footer>
-  
+
+  <script>
+    // Live Multi-Vendor Inventory
+    const storeItems = [
+      { 
+        id: 401, 
+        name: 'Organic Glow Body Polish & Exfoliating Scrub', 
+        vendor: 'Phyna Beauty Spa (Verified)', 
+        price: 8500, 
+        category: 'Beauty', 
+        image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=500&q=80' 
+      },
+      { 
+        id: 402, 
+        name: 'Botanical Herbal Rejuvenating Facial Serum', 
+        vendor: 'Phyna Beauty Spa (Verified)', 
+        price: 12000, 
+        category: 'Beauty', 
+        image: 'https://images.unsplash.com/photo-1608248597359-002161f3d358?auto=format&fit=crop&w=500&q=80' 
+      },
+      { 
+        id: 301, 
+        name: 'Supreme Quilted Puffer Shoulder Bag', 
+        vendor: 'Above Collectionz (Awka)', 
+        price: 16500, 
+        category: 'Fashion', 
+        image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=500&q=80' 
+      },
+      { 
+        id: 302, 
+        name: 'Streetwear Graphic Two-Piece Set', 
+        vendor: 'Above Collectionz (Awka)', 
+        price: 24000, 
+        category: 'Fashion', 
+        image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=500&q=80' 
+      },
+      { 
+        id: 201, 
+        name: "Ziee's Jumbo Jollof & Fried Turkey Tray", 
+        vendor: "Ziee's Kitchen (Lagos)", 
+        price: 28000, 
+        category: 'Food', 
+        image: 'https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=500&q=80' 
+      },
+      { 
+        id: 202, 
+        name: 'Native Assorted Meat Pepper Soup Pot', 
+        vendor: "Ziee's Kitchen (Lagos)", 
+        price: 25000, 
+        category: 'Food', 
+        image: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=500&q=80' 
+      },
+      { 
+        id: 101, 
+        name: 'Oraimo FreePods 4 ANC Earbuds', 
+        vendor: 'GadgetZone Lagos', 
+        price: 28500, 
+        category: 'Tech', 
+        image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=500&q=80' 
+      }
+    ];
+
+    let selectedCat = 'All';
+    let cart = {};
+
+    function renderStore() {
+      const query = document.getElementById('storeSearch').value.toLowerCase();
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = '';
+
+      const filtered = storeItems.filter(item => {
+        const matchesCat = selectedCat === 'All' || item.category === selectedCat;
+        const matchesSearch = item.name.toLowerCase().includes(query) || item.vendor.toLowerCase().includes(query);
+        return matchesCat && matchesSearch;
+      });
+
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'bg-white border border-gray-200 rounded-xl overflow-hidden flex flex-col hover:shadow-md transition-shadow';
+        card.innerHTML = `
+          <div class="h-36 sm:h-44 bg-gray-100 overflow-hidden relative">
+            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
+            <span class="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-[10px] font-bold px-2 py-0.5 rounded text-gray-700">${item.category}</span>
+          </div>
+          <div class="p-3 flex flex-col flex-grow">
+            <p class="text-[11px] text-emerald-700 font-bold truncate mb-0.5">${item.vendor}</p>
+            <h3 class="text-xs sm:text-sm font-bold text-gray-900 leading-snug line-clamp-2">${item.name}</h3>
+            <div class="mt-auto pt-3 flex items-center justify-between">
+              <span class="text-sm font-extrabold text-gray-900">₦${item.price.toLocaleString()}</span>
+              <button onclick="addToBasket(${item.id})" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-colors">
+                + Add
+              </button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function filterCat(cat) {
+      selectedCat = cat;
+      document.querySelectorAll('.store-cat').forEach(b => {
+        if (b.innerText.includes(cat) || (cat === 'All' && b.innerText.includes('All'))) {
+          b.className = 'store-cat bg-emerald-600 text-white px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap';
+        } else {
+          b.className = 'store-cat bg-white border border-gray-200 text-gray-700 px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap';
+        }
+      });
+      renderStore();
+    }
+
+    function addToBasket(id) {
+      cart[id] = (cart[id] || 0) + 1;
+      updateBasketUI();
+    }
+
+    function updateBasketUI() {
+      const badge = document.getElementById('cartBadge');
+      const list = document.getElementById('cartList');
+      const totalEl = document.getElementById('cartTotal');
+      
+      const count = Object.values(cart).reduce((a, b) => a + b, 0);
+      badge.innerText = count;
+      badge.classList.toggle('hidden', count === 0);
+
+      list.innerHTML = '';
+      let total = 0;
+
+      if (count === 0) {
+        list.innerHTML = `<p class="text-center text-xs text-gray-400 py-10">Your basket is empty.</p>`;
+      } else {
+        Object.keys(cart).forEach(id => {
+          const item = storeItems.find(p => p.id == id);
+          total += item.price * cart[id];
+          const row = document.createElement('div');
+          row.className = 'flex items-center justify-between text-xs bg-gray-50 p-2.5 rounded-lg border border-gray-100';
+          row.innerHTML = `
+            <div>
+              <p class="font-bold text-gray-900">${item.name}</p>
+              <p class="text-[10px] text-gray-500">₦${item.price.toLocaleString()} x ${cart[id]}</p>
+            </div>
+            <span class="font-bold text-gray-800">₦${(item.price * cart[id]).toLocaleString()}</span>
+          `;
+          list.appendChild(row);
+        });
+      }
+      totalEl.innerText = `₦${total.toLocaleString()}`;
+    }
+
+    function toggleCartModal() {
+      document.getElementById('cartModal').classList.toggle('hidden');
+    }
+
+    function toggleView() {
+      const store = document.getElementById('storeView');
+      const vendor = document.getElementById('vendorView');
+      const btn = document.getElementById('viewToggleBtn');
+
+      if (store.classList.contains('hidden')) {
+        showStore();
+      } else {
+        store.classList.add('hidden');
+        vendor.classList.remove('hidden');
+        btn.innerText = 'View Storefront';
+      }
+    }
+
+    function showStore() {
+      document.getElementById('storeView').classList.remove('hidden');
+      document.getElementById('vendorView').classList.add('hidden');
+      document.getElementById('viewToggleBtn').innerText = 'Vendor Portal';
+    }
+
+    function checkoutOrder() {
+      if (Object.keys(cart).length === 0) return alert('Your basket is empty.');
+      
+      let summary = '*New Customer Order - OjaCentral*%0A%0A';
+      let total = 0;
+
+      Object.keys(cart).forEach(id => {
+        const item = storeItems.find(p => p.id == id);
+        summary += `• ${item.name} (${cart[id]}x) [${item.vendor}] - ₦${(item.price * cart[id]).toLocaleString()}%0A`;
+        total += item.price * cart[id];
+      });
+
+      summary += `%0A*Total Escrow Order Value:* ₦${total.toLocaleString()}%0A%0APlease provide delivery address and preferred dispatch method.`;
+      const url = `https://api.whatsapp.com/send?phone=2347045899107&text=${summary}`;
+      window.location.href = url;
+    }
+
+    function sendToWhatsApp(e) {
+      e.preventDefault();
+      const b = document.getElementById('vBusiness').value;
+      const c = document.getElementById('vContact').value;
+      const p = document.getElementById('vPhone').value;
+      const cat = document.getElementById('vCategory').value;
+      const loc = document.getElementById('vLocation').value;
+
+      const text = `*New Merchant Registration - OjaCentral*%0A%0A` +
+        `*Business:* ${encodeURIComponent(b)}%0A` +
+        `*Contact:* ${encodeURIComponent(c)}%0A` +
+        `*Phone:* ${encodeURIComponent(p)}%0A` +
+        `*Category:* ${encodeURIComponent(cat)}%0A` +
+        `*State:* ${encodeURIComponent(loc)}`;
+
+      window.location.href = `https://api.whatsapp.com/send?phone=2347045899107&text=${text}`;
+    }
+
+    renderStore();
+  </script>
+</body>
+</html>
