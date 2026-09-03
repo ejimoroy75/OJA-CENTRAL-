@@ -42,7 +42,7 @@
           Verified Nigerian Merchants
         </span>
         <h1 class="text-2xl sm:text-4xl font-black tracking-tight max-w-2xl mx-auto">
-          Shop Direct from Trusted Boutiques, Kitchens & Beauty Brands
+          Shop Direct from Trusted Boutiques, Gaming Hubs & Brands
         </h1>
         <p class="mt-2 text-xs sm:text-sm text-emerald-100 max-w-lg mx-auto">
           Every order protected by OjaCentral Escrow. Fast delivery across Nigeria.
@@ -53,7 +53,7 @@
     <!-- Search & Filter Bar -->
     <div class="max-w-6xl mx-auto px-4 mt-6">
       <div class="relative mb-4">
-        <input type="text" id="storeSearch" oninput="renderStore()" placeholder="Search items, brands, or vendors..." 
+        <input type="text" id="storeSearch" oninput="renderStore()" placeholder="Search consoles, fashion, tech, vendors..." 
           class="w-full bg-white border border-gray-200 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none shadow-sm">
         <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-gray-400 text-sm"></i>
       </div>
@@ -61,10 +61,10 @@
       <!-- Categories -->
       <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="catFilterRow">
         <button onclick="filterCat('All')" class="store-cat bg-emerald-600 text-white px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">All Items</button>
-        <button onclick="filterCat('Beauty')" class="store-cat bg-white border border-gray-200 text-gray-700 px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">Health & Beauty</button>
+        <button onclick="filterCat('Tech')" class="store-cat bg-white border border-gray-200 text-gray-700 px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">Gaming & Tech</button>
         <button onclick="filterCat('Fashion')" class="store-cat bg-white border border-gray-200 text-gray-700 px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">Fashion & Apparel</button>
+        <button onclick="filterCat('Beauty')" class="store-cat bg-white border border-gray-200 text-gray-700 px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">Health & Beauty</button>
         <button onclick="filterCat('Food')" class="store-cat bg-white border border-gray-200 text-gray-700 px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">Kitchens & Food</button>
-        <button onclick="filterCat('Tech')" class="store-cat bg-white border border-gray-200 text-gray-700 px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">Electronics</button>
       </div>
     </div>
 
@@ -90,7 +90,7 @@
       <form onsubmit="sendToWhatsApp(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Business Name</label>
-          <input type="text" id="vBusiness" required placeholder="e.g. Phyna Beauty Spa" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+          <input type="text" id="vBusiness" required placeholder="e.g. Kelly Games" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
         </div>
 
         <div class="grid grid-cols-2 gap-3">
@@ -107,16 +107,16 @@
         <div>
           <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Category</label>
           <select id="vCategory" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white">
-            <option value="Beauty">Health & Beauty Spa</option>
+            <option value="Tech">Gaming, Consoles & Electronics</option>
             <option value="Fashion">Fashion, Bags & Apparel</option>
+            <option value="Beauty">Health & Beauty Spa</option>
             <option value="Food">Kitchens, Food & Catering</option>
-            <option value="Tech">Consumer Electronics</option>
           </select>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Location (State)</label>
-          <input type="text" id="vLocation" required placeholder="e.g. Lagos, Anambra, Abuja" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+          <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Location</label>
+          <input type="text" id="vLocation" required placeholder="e.g. Eke Awka Plaza, Anambra State" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
         </div>
 
         <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-lg text-sm transition-colors shadow-sm flex items-center justify-center gap-2">
@@ -163,8 +163,24 @@
     // Live Multi-Vendor Inventory
     const storeItems = [
       { 
+        id: 501, 
+        name: 'Sony PlayStation 5 Console (Disc Edition)', 
+        vendor: 'Kelly Games (Eke Awka Plaza)', 
+        price: 760000, 
+        category: 'Tech', 
+        image: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=500&q=80' 
+      },
+      { 
+        id: 502, 
+        name: 'PS5 DualSense Wireless Controller (White)', 
+        vendor: 'Kelly Games (Eke Awka Plaza)', 
+        price: 78000, 
+        category: 'Tech', 
+        image: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=500&q=80' 
+      },
+      { 
         id: 401, 
-        name: 'Organic Glow Body Polish & Exfoliating Scrub', 
+        name: 'Organic Glow Body Polish & Scrub', 
         vendor: 'Phyna Beauty Spa (Verified)', 
         price: 8500, 
         category: 'Beauty', 
@@ -172,7 +188,7 @@
       },
       { 
         id: 402, 
-        name: 'Botanical Herbal Rejuvenating Facial Serum', 
+        name: 'Botanical Facial Serum', 
         vendor: 'Phyna Beauty Spa (Verified)', 
         price: 12000, 
         category: 'Beauty', 
@@ -201,22 +217,6 @@
         price: 28000, 
         category: 'Food', 
         image: 'https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=500&q=80' 
-      },
-      { 
-        id: 202, 
-        name: 'Native Assorted Meat Pepper Soup Pot', 
-        vendor: "Ziee's Kitchen (Lagos)", 
-        price: 25000, 
-        category: 'Food', 
-        image: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=500&q=80' 
-      },
-      { 
-        id: 101, 
-        name: 'Oraimo FreePods 4 ANC Earbuds', 
-        vendor: 'GadgetZone Lagos', 
-        price: 28500, 
-        category: 'Tech', 
-        image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=500&q=80' 
       }
     ];
 
